@@ -1,6 +1,16 @@
-def main():
-    print("Hello from pizza-ops!")
+from fastapi import FastAPI
+from app.initializer import init_application
+import logging
+
+logging.basicConfig(level="DEBUG")
+
+app = FastAPI()
+
+logging.info("Starting application initialization...")
+init_application(application=app)
+logging.info("Successfully initialized!")
 
 
-if __name__ == "__main__":
-    main()
+@app.get("/")
+async def root():
+    return {"message": "Hello Bigger Applications!"}
