@@ -6,10 +6,10 @@ class Customer(models.Model):
     id = fields.UUIDField(primary_key=True)
     username = fields.CharField(max_length=20, unique=True)
     name = fields.CharField(max_length=50, blank=True)
-    firstname = fields.CharField(max_length=50, null=True)
-    phone = fields.CharField(max_length=20, null=True)
+    firstname = fields.CharField(max_length=50, null=True, blank=True)
+    phone = fields.CharField(max_length=20)
     address = fields.CharField(max_length=50, null=True)
-    password_hash = fields.CharField(max_length=128, null=True)
+    password_hash = fields.CharField(max_length=128)
     created_at = fields.DatetimeField(auto_now_add=True)
     updated_at = fields.DatetimeField(auto_now=True)
 
