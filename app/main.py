@@ -1,6 +1,8 @@
-from fastapi import FastAPI
-from app.initializer import init_application
 import logging
+
+from fastapi import FastAPI
+
+from app.initializer import init_application
 
 logging.basicConfig(level="DEBUG")
 

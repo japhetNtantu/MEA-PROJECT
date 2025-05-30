@@ -1,6 +1,6 @@
-from tortoise.exceptions import BaseORMException
 from fastapi import Request
 from fastapi.responses import JSONResponse
+from tortoise.exceptions import BaseORMException
 
 
 async def tortoise_exception_handler(

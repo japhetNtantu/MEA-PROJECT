@@ -1,4 +1,5 @@
-from tortoise import fields, models
+from tortoise import fields
+from tortoise import models
 
 
 class Customer(models.Model):
@@ -7,7 +8,7 @@ class Customer(models.Model):
     name = fields.CharField(max_length=50, blank=True)
     firstname = fields.CharField(max_length=50, null=True)
     phone = fields.CharField(max_length=20, null=True)
-    adress = fields.CharField(max_length=50, null=True)
+    address = fields.CharField(max_length=50, null=True)
     password_hash = fields.CharField(max_length=128, null=True)
     created_at = fields.DatetimeField(auto_now_add=True)
     updated_at = fields.DatetimeField(auto_now=True)

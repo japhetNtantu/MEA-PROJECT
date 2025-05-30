@@ -1,5 +1,6 @@
-from betterconf import field
 from betterconf import betterconf
+from betterconf import field
+
 from app.config.cfg import DEBUG
 
 DB_MODELS = [

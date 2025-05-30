@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from tortoise.contrib.starlette import register_tortoise
+
 from app.config import tortoise_config
 
 

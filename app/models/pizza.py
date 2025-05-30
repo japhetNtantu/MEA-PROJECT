@@ -1,10 +1,14 @@
 from tortoise import fields
 from tortoise import models
 
+from app.utils import validators
+
 
 class Pizza(models.Model):
     id = fields.UUIDField(primary_key=True)
-    image_url = fields.CharField(max_length=500, null=True)
+    image_url = fields.CharField(
+        max_length=500, null=True, validators=[validators.validate_url]
+    )
     description = fields.TextField(null=True)
     price = fields.DecimalField(max_digits=6, decimal_places=2)
     is_available = fields.BooleanField(default=True)
