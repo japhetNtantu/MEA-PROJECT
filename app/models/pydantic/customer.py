@@ -15,7 +15,7 @@ class CustomerCreateOrUpdateModel(BaseModel):
     password: str = Field(..., min_length=8)
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class CustomerDetailModel(BaseModel):
@@ -27,7 +27,7 @@ class CustomerDetailModel(BaseModel):
     updated_at: datetime
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class Token(BaseModel):

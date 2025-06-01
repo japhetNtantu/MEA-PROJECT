@@ -28,7 +28,6 @@ router = APIRouter()
 )
 async def post(customer: CustomerCreateOrUpdateModel = Body(...)):
     user = await User.get_or_none(username=customer.username)
-    print(user, customer.username)
     if user:
         raise HTTPException(status_code=400, detail="Username already registered")
     user = await User.create(**customer.model_dump())
