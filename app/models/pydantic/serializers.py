@@ -1,4 +1,5 @@
 from datetime import datetime
+from decimal import Decimal
 from typing import Optional
 from uuid import UUID
 
@@ -42,3 +43,17 @@ class TokenData(BaseModel):
 class LoginRequest(BaseModel):
     username: str
     password: str
+
+
+class PizzaDetailModel(BaseModel):
+    id: UUID
+    image_url: str | None
+    description: str | None
+    price: Decimal
+
+    class Config:
+        from_attributes = True
+
+
+class Status(BaseModel):
+    message: str

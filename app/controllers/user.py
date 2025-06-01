@@ -11,10 +11,10 @@ from fastapi import status
 from app.auth.authentication import create_access_token
 from app.auth.authentication import get_current_user
 from app.config import cfg
-from app.models.pydantic.customer import CustomerCreateOrUpdateModel
-from app.models.pydantic.customer import CustomerDetailModel
-from app.models.pydantic.customer import LoginRequest
-from app.models.pydantic.customer import Token
+from app.models.pydantic.serializers import CustomerCreateOrUpdateModel
+from app.models.pydantic.serializers import CustomerDetailModel
+from app.models.pydantic.serializers import LoginRequest
+from app.models.pydantic.serializers import Token
 from app.models.users import Customer as User
 
 router = APIRouter()

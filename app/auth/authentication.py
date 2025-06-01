@@ -12,7 +12,7 @@ from fastapi.security import OAuth2PasswordBearer
 from jwt.exceptions import InvalidTokenError
 
 from app.config import cfg
-from app.models.pydantic.customer import TokenData
+from app.models.pydantic.serializers import TokenData
 from app.models.users import Customer as User
 
 oauth2_scheme = OAuth2PasswordBearer(
