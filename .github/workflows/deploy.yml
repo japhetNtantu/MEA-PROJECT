@@ -18,11 +18,8 @@ jobs:
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/pizza.pem
           chmod 400 ~/.ssh/pizza.pem
           ssh-keyscan ${{ vars.SSH_HOST }} >> ~/.ssh/known_hosts
-          ls -l ~/.ssh
-          cat ~/.ssh/authorized_keys
           ssh -vvv -i ~/.ssh/pizza.pem ${{ vars.SSH_LOGIN }}@${{ vars.SSH_HOST }}
 
-    
       - name: Deploy on Amazon EC2 instance
         run: |
           ssh -i ~/.ssh/pizza.pem \
