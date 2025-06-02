@@ -15,17 +15,18 @@ jobs:
       - name: Install SSH key
         run: |
           mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/meapizza.pem
-          chmod 400 ~/.ssh/meapizza.pem
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/pizza.pem
+          chmod 400 ~/.ssh/pizza.pem
           ssh-keyscan ${{ vars.SSH_HOST }} >> ~/.ssh/known_hosts
+          ssh -vvv -i ~/.ssh/pizza.pem ${{ vars.SSH_LOGIN }}@${{ vars.SSH_HOST }}
 
       - name: Deploy on Amazon EC2 instance
         run: |
-          ssh -i ~/.ssh/meapizza.pem \
+          ssh -i ~/.ssh/pizza.pem \
               -o StrictHostKeyChecking=no \
               -o UserKnownHostsFile=/dev/null \
-              ec2-user@${{ vars.SSH_HOST }} \
+              ${{ vars.SSH_LOGIN }}@${{ vars.SSH_HOST }} \
               "echo 'Hello world Amazon EC2🚀'"
 
       - name: Cleanup
-        run: rm -rf ~/.ssh/meapizza.pem
+        run: rm -rf ~/.ssh/pizza.pem
