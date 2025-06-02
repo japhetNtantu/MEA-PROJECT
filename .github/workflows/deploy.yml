@@ -8,22 +8,24 @@ concurrency:
   group: ${{ github.head_ref || github.run_id }}
   cancel-in-progress: true
 
-
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Install ssh keys
+      - name: Install SSH key
         run: |
-          install -m 600 -D /dev/null ~/.ssh/meapizza.pem
+          mkdir -p ~/.ssh
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/meapizza.pem
-          ssh-keyscan -v ${{ vars.SSH_HOST }} > ~/.ssh/known_hosts 2>&1
+          chmod 400 ~/.ssh/meapizza.pem
+          ssh-keyscan ${{ vars.SSH_HOST }} >> ~/.ssh/known_hosts
 
       - name: Deploy on Amazon EC2 instance
         run: |
-           ssh -i ~/.ssh/meapizza.pem -o StrictHostKeyChecking=no ${{ vars.SSH_HOST }} << EOF
-           echo "Hello world Amazon EC2🚀"
-           EOF
+          ssh -i ~/.ssh/meapizza.pem \
+              -o StrictHostKeyChecking=no \
+              -o UserKnownHostsFile=/dev/null \
+              ec2-user@${{ vars.SSH_HOST }} \
+              "echo 'Hello world Amazon EC2🚀'"
 
       - name: Cleanup
         run: rm -rf ~/.ssh/meapizza.pem
