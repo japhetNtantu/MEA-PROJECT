@@ -15,9 +15,12 @@ router = APIRouter()
 
 
 @router.get("/", description="Get all pizzas", response_model=List[PizzaDetailModel])
-async def get_all_pizzas() -> List[PizzaDetailModel]:
-    pizzas = Pizza.all()
-    return await pizza_pydantic.from_queryset(pizzas)
+async def get_all_pizzas(page_size: int = 10, page: int = 1) -> List[PizzaDetailModel]:
+    if page_size > 100 or page_size < 0:
+        page_size = 100
+
+    pizzas = await Pizza.all().limit(page_size).offset((page - 1) * page_size).all()
+    return pizzas
 
 
 @router.get("/{pk}", response_model=PizzaDetailModel)

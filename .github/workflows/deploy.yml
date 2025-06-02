@@ -1,0 +1,36 @@
+name: Pizza OPs CI/CD process
+
+on:
+  push:
+    branches: ["feat/init-backend"]
+
+concurrency:
+  group: ${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+env:
+  VERSION: "1.0.1"
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install ssh keys
+        run: |
+          install -m 600 -D /dev/null ~/.ssh/id_rsa
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          ssh-keyscan -v -p 5022 ${{ secrets.SSH_HOST }} > ~/.ssh/known_hosts 2>&1
+
+      - name: Start ssh-agent
+        run: |
+          eval $(ssh-agent -s)
+          ssh-add ~/.ssh/id_rsa
+
+      - name: Deploy on Amazon EC2 instance
+        run: |
+          ssh -o StrictHostKeyChecking=no -p 5022 ${{ secrets.SSH_LOGIN }}@${{ secrets.SSH_HOST }} << EOF
+            echo "Hello world Amazon EC2🚀"
+          EOF
+
+      - name: Cleanup
+        run: rm -rf ~/.ssh
