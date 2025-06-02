@@ -15,7 +15,7 @@ jobs:
       - name: Install SSH key
         run: |
           mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/pizza.pem
+          echo ${{ secrets.SSH_PRIVATE_KEY }} > ~/.ssh/pizza.pem
           chmod 400 ~/.ssh/pizza.pem
           ssh-keyscan ${{ vars.SSH_HOST }} >> ~/.ssh/known_hosts
           ssh -vvv -i ~/.ssh/pizza.pem ${{ vars.SSH_LOGIN }}@${{ vars.SSH_HOST }}
