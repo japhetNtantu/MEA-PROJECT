@@ -1,0 +1,78 @@
+<div class="register-container">
+    <h2>Créer un compte</h2>
+  
+    <div *ngIf="errorMessage" class="alert error">{{ errorMessage }}</div>
+    <div *ngIf="successMessage" class="alert success">{{ successMessage }}</div>
+  
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="username">Nom d'utilisateur:</label>
+        <input type="text" id="username" formControlName="username" />
+        <div *ngIf="formControls['username'].invalid && formControls['username'].touched" class="error-message">
+          <div *ngIf="formControls['username'].errors?.['required']">Le nom d'utilisateur est requis.</div>
+          <div *ngIf="formControls['username'].errors?.['minlength']">Minimum 3 caractères.</div>
+          <div *ngIf="formControls['username'].errors?.['maxlength']">Maximum 20 caractères.</div>
+        </div>
+      </div>
+  
+      <div class="form-group">
+        <label for="name">Nom:</label>
+        <input type="text" id="name" formControlName="name" />
+        <div *ngIf="formControls['name'].invalid && formControls['name'].touched" class="error-message">
+          <div *ngIf="formControls['name'].errors?.['maxlength']">Maximum 50 caractères.</div>
+        </div>
+      </div>
+  
+      <div class="form-group">
+        <label for="firstname">Prénom:</label>
+        <input type="text" id="firstname" formControlName="firstname" />
+        <div *ngIf="formControls['firstname'].invalid && formControls['firstname'].touched" class="error-message">
+          <div *ngIf="formControls['firstname'].errors?.['maxlength']">Maximum 50 caractères.</div>
+        </div>
+      </div>
+  
+      <div class="form-group">
+        <label for="phone">Téléphone:</label>
+        <input type="text" id="phone" formControlName="phone" />
+        <div *ngIf="formControls['phone'].invalid && formControls['phone'].touched" class="error-message">
+          <div *ngIf="formControls['phone'].errors?.['required']">Le numéro de téléphone est requis.</div>
+          <div *ngIf="formControls['phone'].errors?.['pattern']">Veuillez entrer un numéro de téléphone valide (10 chiffres).</div>
+        </div>
+      </div>
+  
+      <div class="form-group">
+        <label for="address">Adresse:</label>
+        <input type="text" id="address" formControlName="address" />
+        <div *ngIf="formControls['address'].invalid && formControls['address'].touched" class="error-message">
+          <div *ngIf="formControls['address'].errors?.['maxlength']">Maximum 50 caractères.</div>
+        </div>
+      </div>
+  
+      <div class="form-group">
+        <label for="password">Mot de passe:</label>
+        <input type="password" id="password" formControlName="password" />
+        <div *ngIf="formControls['password'].invalid && formControls['password'].touched" class="error-message">
+          <div *ngIf="formControls['password'].errors?.['required']">Le mot de passe est requis.</div>
+          <div *ngIf="formControls['password'].errors?.['minlength']">Minimum 8 caractères.</div>
+        </div>
+      </div>
+  
+      <div class="form-group">
+        <label for="confirmPassword">Confirmer le mot de passe:</label>
+        <input type="password" id="confirmPassword" formControlName="confirmPassword" />
+        <div *ngIf="formControls['confirmPassword'].invalid && formControls['confirmPassword'].touched" class="error-message">
+          <div *ngIf="formControls['confirmPassword'].errors?.['required']">La confirmation du mot de passe est requise.</div>
+          <div *ngIf="formControls['confirmPassword'].errors?.['passwordMismatch']">Les mots de passe ne correspondent pas.</div>
+        </div>
+      </div>
+  
+      <button type="submit" [disabled]="registerForm.invalid || isLoading">
+        <span *ngIf="isLoading">Inscription en cours...</span>
+        <span *ngIf="!isLoading">S'inscrire</span>
+      </button>
+    </form>
+  
+    <p class="login-link">
+      Déjà un compte ? <a routerLink="/auth/login">Connectez-vous ici</a>.
+    </p>
+  </div>
