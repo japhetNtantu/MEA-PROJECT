@@ -122,4 +122,6 @@ watchfiles==1.0.5
 websockets==15.0.1
     # via uvicorn
 pre-commit==3.5.0
+fastadmin[fastapi,tortoise-orm]>=0.2.22
+faker>=37.3.0
  
