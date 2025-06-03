@@ -31,7 +31,10 @@ jobs:
           pip install -r requirements.txt
 
       - name: Run pre-commit
-        run: pre-commit run --all-files
+        run: |
+          cd app/
+          pre-commit run --all-files
+          cd ..
 
   docker:
     name: Build and Push Docker Image
