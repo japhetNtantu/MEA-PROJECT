@@ -52,8 +52,27 @@ class PizzaDetailModel(BaseModel):
     price: Decimal
 
     class Config:
-        from_attributes = True
+        orm_mode = True
 
 
 class Status(BaseModel):
     message: str
+
+
+class OrderCreatedModel(BaseModel):
+    customer: UUID
+
+
+class AddToCartRequest(BaseModel):
+    customer_id: UUID
+    pizza_id: UUID
+    quantity: int
+
+
+class PizzaCreateModel(BaseModel):
+    image_url: str
+    description: str
+    price: Decimal
+
+    class Config:
+        from_attributes = True

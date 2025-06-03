@@ -4,8 +4,8 @@ import { Pizza } from './pizza.model';
 export type OrderStatus = 'pending' | 'preparing' | 'delivered';
 
 export interface OrderItem {
-  id: string; 
-  pizza: Pizza;
+  customer_id?: string; 
+  pizza_id: string;
   quantity: number;
 }
 
