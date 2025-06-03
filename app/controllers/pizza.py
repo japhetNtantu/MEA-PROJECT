@@ -2,10 +2,13 @@ from typing import List
 from uuid import UUID
 
 from fastapi import APIRouter
+from fastapi import Body
 from fastapi import HTTPException
+from fastapi import status
 from tortoise.contrib.pydantic import pydantic_model_creator
 
 from app.models.pizza import Pizza
+from app.models.pydantic.serializers import PizzaCreateModel
 from app.models.pydantic.serializers import PizzaDetailModel
 from app.models.pydantic.serializers import Status
 
@@ -37,3 +40,15 @@ async def delete_pizza_by_id(pk: UUID):
     if not deleted_pizza:
         raise HTTPException(status_code=404, detail=f"Pizza {pk} not found")
     return Status(message=f"Deleted pizza {pk}")
+
+
+@router.post(
+    "/create",
+    description="Create a new pizza",
+    response_model=PizzaCreateModel,
+    status_code=status.HTTP_201_CREATED,
+)
+async def post(pizza: PizzaCreateModel = Body(...)):
+    pizza_created = await Pizza.create(**pizza.model_dump())
+    await pizza_created.save()
+    return pizza_created
