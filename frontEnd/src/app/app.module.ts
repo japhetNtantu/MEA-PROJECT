@@ -5,9 +5,12 @@ import localeFr from '@angular/common/locales/fr';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { CoreModule } from './core.module';
 import { SharedModule } from './shared/shared.module';
 import { HttpClientModule } from '@angular/common/http';
+import { PublicModule } from './features/public/public.module';
+import { AdminModule } from './features/admin/admin.module';
+import { LoginModule } from './features/auth/login.module';
+import { CoreModule } from './core/core.module';
 
 
 registerLocaleData(localeFr);
@@ -21,6 +24,9 @@ registerLocaleData(localeFr);
     HttpClientModule,
     CoreModule,
     SharedModule,
+    PublicModule,
+    AdminModule,
+    LoginModule,
     AppRoutingModule
   ],
   providers: [{ provide: LOCALE_ID, useValue: 'fr' }],

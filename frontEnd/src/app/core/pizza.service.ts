@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Observable, delay, of, throwError } from 'rxjs';
 import { Pizza } from '../models/pizza.model';
+import { environment } from '../../environments/environment';
 
 interface StatusResponse {
   message: string;
@@ -12,7 +13,7 @@ interface StatusResponse {
 })
 export class PizzaService {
 
-  private apiUrl = 'http://localhost:8000/pizzas';
+  private apiUrl = `${environment.apiUrl}/pizzas`;
 
   constructor(private http: HttpClient) { }
 
@@ -43,5 +44,61 @@ export class PizzaService {
    */
   deletePizza(id: string): Observable<StatusResponse> {
     return this.http.delete<StatusResponse>(`${this.apiUrl}/${id}`);
+  }
+
+  getMockPizzas(): Observable<Pizza[]> {
+    const mockPizzas: Pizza[] = [
+      {
+        id: 'pizza-001',
+        name: 'Margherita Classique',
+        image_url: 'https://images.unsplash.com/photo-1594007654729-407edc192ba0?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+        description: 'Tomate, Mozzarella, Basilic frais, Huile d\'olive extra vierge.',
+        price: 9.50
+      },
+      {
+        id: 'pizza-002',
+        name: 'Reine Jambon Fromage',
+        image_url: 'https://images.unsplash.com/photo-1579737976694-a169b177d697?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+        description: 'Tomate, Mozzarella, Jambon, Champignons frais.',
+        price: 11.00
+      },
+      {
+        id: 'pizza-003',
+        name: 'Quatre Fromages',
+        image_url: 'https://images.unsplash.com/photo-1594007654729-407edc192ba0?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', // Réutilise une image ou trouve-en une autre
+        description: 'Mozzarella, Chèvre, Gorgonzola, Parmesan.',
+        price: 12.50
+      },
+      {
+        id: 'pizza-004',
+        name: 'Végétarienne du Jardin',
+        image_url: 'https://images.unsplash.com/photo-1628842426993-9c2b4c10f7ac?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+        description: 'Tomate, Mozzarella, Poivrons, Oignons, Olives, Champignons.',
+        price: 10.50
+      },
+      {
+        id: 'pizza-005',
+        name: 'Pepperoni Inferno',
+        image_url: 'https://images.unsplash.com/photo-1628842426993-9c2b4c10f7ac?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+        description: 'Tomate, Mozzarella, Pepperoni épicé, Piments frais.',
+        price: 12.00
+      }
+    ];
+
+    return of(mockPizzas).pipe(delay(500));
+  }
+
+  private handleError(error: HttpErrorResponse): Observable<never> {
+    let errorMessage = 'Une erreur inconnue est survenue!';
+    if (error.error instanceof ErrorEvent) {
+      errorMessage = `Erreur: ${error.error.message}`;
+    } else {
+      errorMessage = `Code d'erreur: ${error.status}\nMessage: ${error.message}`;
+      if (error.error && error.error.detail) {
+        errorMessage = `Erreur de l'API: ${error.error.detail}`;
+      }
+    }
+    console.error(errorMessage);
+    return throwError(() => new Error(errorMessage));
   }
 }

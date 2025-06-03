@@ -2,28 +2,34 @@
     <h1>Nos Délicieuses Pizzas</h1>
   
     <div *ngIf="isLoading" class="loading-spinner">
-      <p>Chargement des pizzas en cours...</p>
-      </div>
+        <p>Chargement des pizzas en cours...</p>
+        <div class="spinner"></div>
+    </div>
   
     <div *ngIf="errorMessage" class="error-message">
-      <p>{{ errorMessage }}</p>
+        <p>{{ errorMessage }}</p>
     </div>
   
     <div *ngIf="!isLoading && !errorMessage" class="pizza-list">
-      <div *ngIf="pizzas.length === 0" class="no-pizzas">
-        <p>Aucune pizza disponible pour le moment.</p>
-      </div>
+        <div *ngIf="pizzas.length === 0" class="no-pizzas">
+            <p>Aucune pizza disponible pour le moment.</p>
+        </div>
   
-      <div *ngFor="let pizza of pizzas" class="pizza-card" (click)="onSelectPizza(pizza)">
-        <img [src]="pizza.image_url || 'assets/placeholder-pizza.png'" [alt]="pizza.id" class="pizza-image">
-        <div class="pizza-details">
-          <h2>{{ pizza.id }}</h2>
-          <p class="pizza-description">{{ pizza.description }}</p>
-          <div class="pizza-price">{{ pizza.price | currency:'EUR':'symbol':'1.2-2':'fr' }}</div>
-          <div class="pizza-availability" [ngClass]="{'available': pizza.id, 'unavailable': !pizza.id}">
-            {{ pizza.id ? 'Disponible' : 'Indisponible' }}
-          </div>
-          </div>
-      </div>
+        <div *ngFor="let pizza of pizzas" class="pizza-card" (click)="onSelectPizza(pizza)">
+            <img [src]="pizza.image_url || 'assets/placeholder-pizza.png'" [alt]="pizza.name" class="pizza-image">
+            <div class="pizza-details">
+                <h2>{{ pizza.name }}</h2>
+                <p class="pizza-description">{{ pizza.description }}</p>
+                <div class="pizza-price">{{ pizza.price | currency:'EUR':'symbol':'1.2-2':'fr' }}</div>
+                <button class="add-to-cart-button">Détails & Ajouter</button>
+            </div>
+        </div>
     </div>
-  </div>
+
+    <app-popup
+        *ngIf="showPopup && selectedPizza"
+        [pizza]="selectedPizza"
+        (addToCart)="onAddToCart($event)"
+        (cancel)="onCancelAdd()">
+    </app-popup>
+</div>

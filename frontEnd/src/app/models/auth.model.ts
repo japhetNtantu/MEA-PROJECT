@@ -1,4 +1,4 @@
-import { Customer } from "./users.model"; // Importe l'interface Customer
+import { Customer } from "./users.model";
 
 export interface LoginRequest {
   username: string;

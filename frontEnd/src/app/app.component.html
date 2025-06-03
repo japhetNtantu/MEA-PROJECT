@@ -6,26 +6,38 @@
 
     <div *ngIf="currentUser" class="user-profile">
       <span>Bonjour, <strong>{{ currentUser.username }}</strong> !</span>
-      </div>
+    </div>
   </div>
 
   <nav class="navbar-right">
     <a routerLink="/public/home" routerLinkActive="active" class="nav-link">Accueil</a>
-    <a routerLink="/public/menu" routerLinkActive="active" class="nav-link">Panier</a>
+
+    <a routerLink="/public/cart" routerLinkActive="active" class="nav-link cart-link" (click)="toggleCartDropdown($event)">
+      Panier
+      <span *ngIf="cartItemCount > 0" class="cart-badge">{{ cartItemCount }}</span>
+    </a>
+
     <ng-container *ngIf="!currentUser">
       <a routerLink="/auth/login" routerLinkActive="active" class="nav-link auth-link">Connexion</a>
+      <a routerLink="/auth/register" routerLinkActive="active" class="nav-link auth-link">Inscription</a>
     </ng-container>
 
     <ng-container *ngIf="currentUser">
       <a *ngIf="currentUser.is_superuser" routerLink="/admin" routerLinkActive="active" class="nav-link admin-link">Admin Dashboard</a>
       <button (click)="logout()" class="nav-link logout-button">Déconnexion</button>
     </ng-container>
+
+    <app-cart-dropdown *ngIf="showCartDropdown" (closeDropdown)="onCloseCartDropdown()"></app-cart-dropdown>
   </nav>
 </header>
 
 <main class="content">
   <router-outlet></router-outlet>
 </main>
+
+<div *ngIf="showOrderSuccessSnapshot" class="order-success-snapshot">
+  <p>🎉 Commande passée avec succès !</p>
+</div>
 
 <footer class="footer">
   <p>&copy; 2025 {{ title }}</p>

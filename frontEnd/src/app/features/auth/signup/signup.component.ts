@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router'; // Pour la redirection après inscription
+import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 
 import { UsersService } from 'src/app/core/users.service';

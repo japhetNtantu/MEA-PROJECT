@@ -5,11 +5,7 @@ import { catchError, map, tap } from 'rxjs/operators';
 
 import { Customer } from '../models/users.model';
 import { LoginRequest, Token } from '../models/auth.model';
-
-
-interface ApiErrorResponse {
-  detail: string;
-}
+import { environment } from '../../environments/environment';
 
 
 @Injectable({
@@ -17,7 +13,7 @@ interface ApiErrorResponse {
 })
 export class UsersService {
 
-  private apiUrl = 'http://localhost:8000/users';
+  private apiUrl = `${environment.apiUrl}/users`;
   private tokenKey = 'access_token';
 
   private currentUserSubject: BehaviorSubject<Customer | null>;

@@ -5,6 +5,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { PizzaService } from './pizza.service';
 import { UsersService } from './users.service';
+import { CartService } from './cart.service';
 
 @NgModule({
   declarations: [],
@@ -12,13 +13,13 @@ import { UsersService } from './users.service';
     CommonModule
   ],
   providers: [
-    // ... tes autres services globaux
     PizzaService,
     UsersService,
+    CartService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
-      multi: true // Indique qu'il peut y avoir plusieurs interceptors
+      multi: true 
     }
   ]
 })
