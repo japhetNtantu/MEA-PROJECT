@@ -46,7 +46,7 @@ def createsuperuser():
             click.echo("Passwords do not match.")
             return
 
-        await Customer.create(
+        user = await Customer.create(
             id=uuid.uuid4(),
             username=username,
             name=username,
@@ -56,6 +56,7 @@ def createsuperuser():
             address=None,
             is_superuser=True,
         )
+        await user.save()
 
         click.echo(f"Superuser '{username}' created successfully.")
         await Tortoise.close_connections()
@@ -80,13 +81,14 @@ def init_pizza_db():
             description = fake.sentence(nb_words=10)
             price = round(random.uniform(5.99, 19.99), 2)
 
-            await Pizza.create(
+            pizza = await Pizza.create(
                 id=uuid.uuid4(),
                 image_url=image_url,
                 description=description,
                 price=price,
                 is_available=True,
             )
+            await pizza.save()
             click.echo(f"🍕 Created pizza #{i + 1}: {image_url}")
 
         await Tortoise.close_connections()
