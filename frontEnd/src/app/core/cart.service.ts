@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, Subject, Subscription } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { BehaviorSubject, Observable, Subject, Subscription, of } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 
 import { CartItem } from '../models/cart.model';
 import { Pizza } from '../models/pizza.model';
 import { UsersService } from './users.service';
 import { Customer } from '../models/users.model';
+import { OrderItem } from '../models/orders.model';
+import { OrderItemService } from './order-item.service';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +22,10 @@ export class CartService {
   private currentUser: Customer | null = null;
   private userSubscription: Subscription;
 
-  constructor(private usersService: UsersService) {
+  constructor(
+    private usersService: UsersService,
+    private orderItemService: OrderItemService
+  ) {
     this.cartTotalItems$ = this.cartItems$.pipe(
       map(itemsMap => {
         let total = 0;
@@ -47,13 +52,31 @@ export class CartService {
     const currentItems = this.cartItemsSubject.value;
     const item = currentItems.get(pizza.id);
 
-    if (item) {
-      item.quantity++;
-    } else {
-      currentItems.set(pizza.id, { pizza: pizza, quantity: 1 });
-    }
-    this.cartItemsSubject.next(currentItems);
-    this.saveCartToLocalStorage();
+    const orderItem: OrderItem = {
+      customer_id: this.currentUser.id,
+      pizza_id: pizza.id,
+      quantity: (item ? item.quantity + 1 : 1)
+    };
+
+
+    this.orderItemService.addCartItemToBackend(orderItem).pipe(
+      catchError(error => {
+        console.error('Erreur lors de l\'enregistrement de l\'article dans le panier backend:', error);
+        return of(null);
+      })
+    ).subscribe(response => {
+      if (response) {
+        console.log('Article du panier enregistré sur le backend:', response);
+      }
+      if (item) {
+        item.quantity++;
+      } else {
+        currentItems.set(pizza.id, { pizza: pizza, quantity: 1 });
+      }
+      this.cartItemsSubject.next(currentItems);
+      this.saveCartToLocalStorage();
+    });
+    
     return true;
   }
 

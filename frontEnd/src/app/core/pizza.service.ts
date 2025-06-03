@@ -3,6 +3,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, delay, of, throwError } from 'rxjs';
 import { Pizza } from '../models/pizza.model';
 import { environment } from '../../environments/environment';
+import { v4 as uuidv4 } from 'uuid';
 
 interface StatusResponse {
   message: string;
@@ -49,35 +50,35 @@ export class PizzaService {
   getMockPizzas(): Observable<Pizza[]> {
     const mockPizzas: Pizza[] = [
       {
-        id: 'pizza-001',
+        id: uuidv4(),
         name: 'Margherita Classique',
         image_url: 'https://images.unsplash.com/photo-1594007654729-407edc192ba0?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
         description: 'Tomate, Mozzarella, Basilic frais, Huile d\'olive extra vierge.',
         price: 9.50
       },
       {
-        id: 'pizza-002',
+        id: uuidv4(),
         name: 'Reine Jambon Fromage',
         image_url: 'https://images.unsplash.com/photo-1579737976694-a169b177d697?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
         description: 'Tomate, Mozzarella, Jambon, Champignons frais.',
         price: 11.00
       },
       {
-        id: 'pizza-003',
+        id: uuidv4(),
         name: 'Quatre Fromages',
         image_url: 'https://images.unsplash.com/photo-1594007654729-407edc192ba0?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', // Réutilise une image ou trouve-en une autre
         description: 'Mozzarella, Chèvre, Gorgonzola, Parmesan.',
         price: 12.50
       },
       {
-        id: 'pizza-004',
+        id: uuidv4(),
         name: 'Végétarienne du Jardin',
         image_url: 'https://images.unsplash.com/photo-1628842426993-9c2b4c10f7ac?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
         description: 'Tomate, Mozzarella, Poivrons, Oignons, Olives, Champignons.',
         price: 10.50
       },
       {
-        id: 'pizza-005',
+        id: uuidv4(),
         name: 'Pepperoni Inferno',
         image_url: 'https://images.unsplash.com/photo-1628842426993-9c2b4c10f7ac?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
         description: 'Tomate, Mozzarella, Pepperoni épicé, Piments frais.',
