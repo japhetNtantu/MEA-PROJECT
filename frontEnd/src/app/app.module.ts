@@ -13,7 +13,7 @@ import { LoginModule } from './features/auth/login.module';
 import { CoreModule } from './core/core.module';
 import { NavbarComponent } from './layout/navbar/navbar.component';
 import { SidebarComponent } from './layout/sidebar/sidebar.component';
-import { UsersComponent } from './layout/users/users.component';
+import { UsersComponent } from './features/admin/users/users.component';
 
 
 registerLocaleData(localeFr);

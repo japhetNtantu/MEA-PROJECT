@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './core/guards/auth.guard';
 import { DashboardComponent } from './features/admin/dashboard/dashboard.component';
-import { UsersComponent } from './layout/users/users.component';
+import { UsersComponent } from './features/admin/users/users.component';
 
 const routes: Routes = [
   {

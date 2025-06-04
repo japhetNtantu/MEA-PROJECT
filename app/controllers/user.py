@@ -55,7 +55,8 @@ async def login(credentials: LoginRequest = Body(...)):
         )
     access_token_expires = timedelta(minutes=cfg.ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(
-        data={"sub": user.username, "isAdmin": user.is_superuser}, expires_delta=access_token_expires
+        data={"sub": user.username, "isAdmin": user.is_superuser},
+        expires_delta=access_token_expires,
     )
     return Token(access_token=access_token, token_type="bearer")
 
@@ -66,6 +67,6 @@ async def login(credentials: LoginRequest = Body(...)):
     response_model=CustomerDetailModel,
 )
 async def me(
-    user: Annotated[CustomerDetailModel, Depends(get_current_user)]
+    user: Annotated[CustomerDetailModel, Depends(get_current_user)],
 ) -> CustomerDetailModel:
     return user

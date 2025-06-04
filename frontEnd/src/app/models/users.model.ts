@@ -9,4 +9,5 @@ export interface Customer {
     is_superuser?: boolean; 
     created_at?: Date;
     updated_at?: Date;
+    last_login?: Date;
   }
