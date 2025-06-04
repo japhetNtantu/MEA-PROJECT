@@ -1,0 +1,147 @@
+<div class="p-6 bg-white rounded-xl shadow-lg max-w-7xl mx-auto">
+  <h2 class="text-2xl font-bold mb-4 text-gray-800">Admin – User List</h2>
+
+  <!-- Loading Spinner -->
+  <div *ngIf="loading" class="flex justify-center py-8">
+    <svg
+      class="animate-spin h-8 w-8 text-blue-600"
+      fill="none"
+      viewBox="0 0 24 24"
+    >
+      <circle
+        class="opacity-25"
+        cx="12"
+        cy="12"
+        r="10"
+        stroke="currentColor"
+        stroke-width="4"
+      />
+      <path
+        class="opacity-75"
+        fill="currentColor"
+        d="M4 12a8 8 0 018-8v4l3.5-3.5L12 0v4a8 8 0 00-8 8z"
+      />
+    </svg>
+  </div>
+
+  <!-- Error Message -->
+  <div *ngIf="error" class="bg-red-100 text-red-700 p-4 rounded mb-4">
+    {{ error }}
+  </div>
+
+  <!-- User Table -->
+  <div *ngIf="!loading && users.length > 0" class="overflow-x-auto">
+    <table
+      class="min-w-full table-auto border border-gray-300 rounded-xl shadow-sm"
+    >
+      <thead class="bg-gray-100">
+        <tr>
+          <th class="px-4 py-2 text-left text-sm text-gray-700">#</th>
+          <th class="px-4 py-2 text-left text-sm text-gray-700">Full Name</th>
+          <th class="px-4 py-2 text-left text-sm text-gray-700">Username</th>
+          <th class="px-4 py-2 text-left text-sm text-gray-700">Phone</th>
+          <th class="px-4 py-2 text-left text-sm text-gray-700">Address</th>
+          <th class="px-4 py-2 text-left text-sm text-gray-700">Role</th>
+          <th class="px-4 py-2 text-left text-sm text-gray-700">Created</th>
+          <th class="px-4 py-2 text-left text-sm text-gray-700">Updated</th>
+          <th class="px-4 py-2 text-left text-sm text-gray-700">Last login</th>
+          <th class="px-4 py-2 text-left text-sm text-gray-700">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          *ngFor="let user of users; index as i"
+          class="hover:bg-gray-50 transition"
+        >
+          <td class="px-4 py-2 border text-sm text-gray-600">{{ i + 1 }}</td>
+          <td class="px-4 py-2 border text-sm text-gray-900 font-medium">
+            {{ user.firstname }} {{ user.name }}
+          </td>
+          <td class="px-4 py-2 border text-sm text-gray-800">
+            {{ user.username }}
+          </td>
+          <td class="px-4 py-2 border text-sm text-gray-700">
+            {{ user.phone }}
+          </td>
+          <td class="px-4 py-2 border text-sm text-gray-700">
+            {{ user.address }}
+          </td>
+          <td class="px-4 py-2 border text-sm">
+            <span
+              [ngClass]="
+                user.is_superuser
+                  ? 'bg-green-100 text-green-700'
+                  : 'bg-blue-100 text-blue-700'
+              "
+              class="px-2 py-1 rounded text-xs font-semibold"
+            >
+              {{ user.is_superuser ? "Admin" : "User" }}
+            </span>
+          </td>
+          <td class="px-4 py-2 border text-sm text-gray-500">
+            {{ user.created_at | date : "short" }}
+          </td>
+          <td class="px-4 py-2 border text-sm text-gray-500">
+            {{ user.updated_at | date : "short" }}
+          </td>
+          <td class="px-4 py-2 border text-sm text-gray-500">
+            {{ user.last_login ? (user.last_login | date : "short") : "Never" }}
+          </td>
+          <td class="px-4 py-2 border text-sm flex items-center gap-2">
+            <!-- Edit Button -->
+            <button
+              (click)="editUser(user.id!)"
+              class="p-2 rounded bg-blue-500 hover:bg-blue-600 text-white"
+              aria-label="Edit User"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-4 w-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M15.232 5.232l3.536 3.536M9 13l6.586-6.586a2 2 0 112.828 2.828L11.828 15.828a2 2 0 01-1.414.586H7v-3a2 2 0 01.586-1.414z"
+                />
+              </svg>
+            </button>
+
+            <!-- Delete Button -->
+            <button
+              (click)="deleteUser(user.id!)"
+              class="p-2 rounded bg-red-500 hover:bg-red-600 text-white"
+              aria-label="Delete User"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-4 w-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- No Users Message -->
+  <div
+    *ngIf="!loading && users.length === 0"
+    class="text-gray-500 text-center mt-8"
+  >
+    No users found.
+  </div>
+</div>

@@ -18,6 +18,7 @@ class Customer(models.Model):
     is_superuser = fields.BooleanField(default=True)
     created_at = fields.DatetimeField(auto_now_add=True)
     updated_at = fields.DatetimeField(auto_now=True)
+    last_login = fields.DatetimeField(null=True)
 
     def full_name(self) -> str:
         if self.name or self.firstname:
