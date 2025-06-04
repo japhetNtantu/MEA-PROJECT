@@ -15,6 +15,6 @@ else
     echo "La database existe déjà..."
 fi
 
-export PYTHONPATH=/app
+cd app/
 
 uvicorn app.main:app --host 0.0.0.0 --port 8000
