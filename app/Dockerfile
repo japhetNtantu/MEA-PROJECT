@@ -17,7 +17,7 @@ RUN apk update && apk add --no-cache \
 RUN addgroup -S docker && adduser -S vscode -G docker -s /bin/bash
 
 COPY . /app/
-COPY ./entrypoint.sh /entrypoint.sh
+COPY entrypoint.sh /entrypoint.sh
 RUN sed -i 's/\r$//' /entrypoint.sh && chmod +x /entrypoint.sh
 
 EXPOSE 8000
