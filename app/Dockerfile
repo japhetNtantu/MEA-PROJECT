@@ -2,21 +2,23 @@ FROM python:3.11-alpine
 ENV PYTHONUNBUFFERED=1 
 WORKDIR /pizza
 
-COPY requirements.txt /pizza
 USER root
 
-RUN --mount=type=cache,target=/root/.cache/pip \
-    pip3 install -r requirements.txt
+COPY requirements.txt /pizza
 
 RUN apk update && apk add --no-cache \
     bash \
     ca-certificates \
     gnupg \
     wget \
-    postgresql-client
+    postgresql-client \
+    dos2unix
+
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip3 install -r requirements.txt
 
 COPY entrypoint.sh /pizza/entrypoint.sh
-RUN sed -i 's/\r$//' /pizza/entrypoint.sh && chmod +x /pizza/entrypoint.sh
+RUN chmod +x /pizza/entrypoint.sh && dos2unix /pizza/entrypoint.sh
 
 COPY . /pizza
 
