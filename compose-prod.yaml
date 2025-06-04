@@ -35,7 +35,8 @@ services:
 
   backend: 
     build:
-      context: app
+      context: .
+      dockerfile: ./app/Dockerfile
     container_name: pizza-container
     environment:
       - POSTGRES_DB=${POSTGRES_DB}
