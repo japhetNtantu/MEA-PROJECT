@@ -92,7 +92,8 @@ jobs:
       - name: Deploy on Amazon EC2 instance
         run: |
           ssh -i ~/.ssh/pizza.pem -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${{ vars.SSH_LOGIN }}@${{ vars.SSH_HOST }} << EOF
-            sudo docker pull mastergeek11/pizza-backend:latest
+            docker stop $(docker ps -aq) && docker rm $(docker ps -aq)
+            sleep 2
             sudo docker run --name backend-container -p 8000:8000 mastergeek11/pizza-backend:latest
           EOF
 

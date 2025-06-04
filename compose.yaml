@@ -1,5 +1,5 @@
-services:
- 
+services: 
+
   pizza-db:
     image: postgres:16.6-bullseye
     container_name: pizza-db-container
@@ -12,8 +12,8 @@ services:
       - "db-data:/var/lib/postgresql/data/"
     env_file:
       - .env
- 
-  backend:
+
+  backend: 
     build:
       context: app
     container_name: pizza-container
@@ -30,10 +30,10 @@ services:
       - .:/app
     depends_on:
       - pizza-db
-    ports:
+    ports: 
       - '8000:8000'
     env_file:
       - .env
- 
+
 volumes:
   db-data:
