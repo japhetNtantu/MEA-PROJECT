@@ -49,12 +49,14 @@ services:
       - API_TEST=${API_TEST}
     depends_on:
       - pizza-db
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.backend.rule=Host(`${DOMAIN_NAME}`)"
-      - "traefik.http.routers.dokemon.entrypoints=web"
+    # labels:
+    #   - "traefik.enable=true"
+    #   - "traefik.http.routers.backend.rule=Host(`${DOMAIN_NAME}`)"
+    #   - "traefik.http.routers.dokemon.entrypoints=web"
     env_file:
       - .env
+    ports: 
+      - '8000:8000'
 
 volumes:
   db-data:
