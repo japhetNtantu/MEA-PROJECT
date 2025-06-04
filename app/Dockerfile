@@ -17,10 +17,9 @@ RUN apk update && apk add --no-cache \
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip3 install -r requirements.txt
 
-COPY entrypoint.sh /pizza/entrypoint.sh
-RUN chmod +x /pizza/entrypoint.sh && dos2unix /pizza/entrypoint.sh
-
 COPY . /pizza
+
+RUN chmod +x /pizza/entrypoint.sh && dos2unix /pizza/entrypoint.sh
 
 EXPOSE 8000
 ENTRYPOINT ["/pizza/entrypoint.sh"]
