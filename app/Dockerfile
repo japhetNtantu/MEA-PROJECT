@@ -3,6 +3,7 @@ ENV PYTHONUNBUFFERED=1
 WORKDIR /pizza
 
 COPY requirements.txt /pizza
+USER root
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip3 install -r requirements.txt
@@ -13,8 +14,6 @@ RUN apk update && apk add --no-cache \
     gnupg \
     wget \
     postgresql-client
-
-RUN addgroup -S docker && adduser -S vscode -G docker -s /bin/bash
 
 COPY entrypoint.sh /pizza/entrypoint.sh
 RUN sed -i 's/\r$//' /pizza/entrypoint.sh && chmod +x /pizza/entrypoint.sh
