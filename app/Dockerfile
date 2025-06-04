@@ -21,5 +21,5 @@ COPY . /pizza
 
 RUN chmod +x /pizza/entrypoint.sh && dos2unix /pizza/entrypoint.sh
 
-EXPOSE 8000
 ENTRYPOINT ["/pizza/entrypoint.sh"]
+EXPOSE 8000
