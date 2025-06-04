@@ -82,7 +82,9 @@ jobs:
         run: |
           ssh -i ~/.ssh/pizza.pem -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${{ vars.SSH_LOGIN }}@${{ vars.SSH_HOST }} << EOF
             sudo docker buildx prune --all --force
-            sudo docker stop $(sudo docker ps -aq) && sleep 2 && sudo docker rm $(sudo docker ps -aq)
+            sudo docker stop $(sudo docker ps -aq)  
+            sleep 2 
+            sudo docker rm $(sudo docker ps -aq)
             sleep 2
             sudo mkdir -p ./letsencrypt
             git clone https://github.com/masterivanic/Pizza-App-FastAPI.git
