@@ -1,6 +1,6 @@
 # 🍕 Pizza Simple App
 
-A full-stack pizza ordering application built with **Angular** (frontend) and **FastAPI** (backend). Dependency management on the backend is handled using [`uv`](https://github.com/astral-sh/uv), a fast and modern Python package manager.
+A full-stack pizza ordering application built with **Angular** (frontend) and **FastAPI** (backend). Dependency Management on the backend is handled using [`uv`](https://github.com/astral-sh/uv), a fast and modern Python package manager.
 
 ---
 
