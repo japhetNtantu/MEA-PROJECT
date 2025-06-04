@@ -106,6 +106,11 @@ export class UsersService {
     );
   }
 
+  isAdmin(): boolean {
+    const user = this.currentUserSubject.value;
+    return user ? !!user.is_superuser : false;
+  }
+
   /**
    * Gère les erreurs HTTP.
    * @param error L'erreur HTTP.

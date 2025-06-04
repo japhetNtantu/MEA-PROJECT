@@ -1,35 +1,129 @@
-<div class="home-container">
-    <h1>Nos Délicieuses Pizzas</h1>
-  
-    <div *ngIf="isLoading" class="loading-spinner">
-        <p>Chargement des pizzas en cours...</p>
-        <div class="spinner"></div>
+<!-- ✅ HTML (home.component.html) -->
+<div class="flex min-h-screen bg-cover bg-center">
+  <!-- Sidebar -->
+  <!-- Optimized Sidebar with routerLinks -->
+  <nav class="w-64 bg-gray-800 text-white h-screen p-4 shadow-xl">
+    <h2 class="text-xl font-bold mb-6">🍕 Order Services</h2>
+    <ul class="space-y-2">
+      <li>
+        <a
+          routerLink="/public/home"
+          routerLinkActive="font-bold"
+          class="block px-4 py-2 rounded hover:bg-gray-700 transition"
+        >
+          🛍️ View Cart
+        </a>
+      </li>
+
+      <li>
+        <a
+          routerLink="/public/compose"
+          routerLinkActive="font-bold"
+          class="block px-4 py-2 rounded hover:bg-gray-700 transition"
+        >
+          ✏️ Compose My Pizza
+        </a>
+      </li>
+
+      <li>
+        <a
+          routerLink="/public/order"
+          routerLinkActive="font-bold"
+          class="block px-4 py-2 rounded hover:bg-gray-700 transition"
+        >
+          🛒 My Orders
+        </a>
+      </li>
+
+      <li>
+        <a
+          routerLink="/public/settings"
+          routerLinkActive="font-bold"
+          class="block px-4 py-2 rounded hover:bg-gray-700 transition"
+        >
+          ⚙️ Settings
+        </a>
+      </li>
+      <li *ngIf="isAdmin">
+        <a
+          routerLink="/admin/dashboard"
+          routerLinkActive="font-bold"
+          class="block px-4 py-2 rounded hover:bg-gray-700 transition"
+        >
+          🛠️ Admin Panel
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- Main Content -->
+  <main
+    class="flex-1 p-8 bg-white bg-opacity-90"
+    style="
+      background-image: url('https://img.freepik.com/free-vector/seamless-pizza-ingredients_1176-269.jpg?semt=ais_items_boosted&w=740');
+    "
+  >
+    <h1 class="text-3xl font-bold mb-6">Available Pizzas</h1>
+
+    <div *ngIf="isLoading" class="text-center text-gray-600">
+      Loading pizzas...
     </div>
-  
-    <div *ngIf="errorMessage" class="error-message">
-        <p>{{ errorMessage }}</p>
-    </div>
-  
-    <div *ngIf="!isLoading && !errorMessage" class="pizza-list">
-        <div *ngIf="pizzas.length === 0" class="no-pizzas">
-            <p>Aucune pizza disponible pour le moment.</p>
-        </div>
-  
-        <div *ngFor="let pizza of pizzas" class="pizza-card" (click)="onSelectPizza(pizza)">
-            <img [src]="pizza.image_url || 'assets/placeholder-pizza.png'" [alt]="pizza.name" class="pizza-image">
-            <div class="pizza-details">
-                <h2>{{ pizza.name }}</h2>
-                <p class="pizza-description">{{ pizza.description }}</p>
-                <div class="pizza-price">{{ pizza.price | currency:'EUR':'symbol':'1.2-2':'fr' }}</div>
-                <button class="add-to-cart-button">Détails & Ajouter</button>
-            </div>
-        </div>
+    <div *ngIf="errorMessage" class="text-red-500 text-center">
+      {{ errorMessage }}
     </div>
 
-    <app-popup
-        *ngIf="showPopup && selectedPizza"
-        [pizza]="selectedPizza"
-        (addToCart)="onAddToCart($event)"
-        (cancel)="onCancelAdd()">
-    </app-popup>
+    <div
+      class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+      *ngIf="!isLoading && pizzas.length"
+    >
+      <div
+        *ngFor="let pizza of pizzas"
+        class="bg-white bg-opacity-80 shadow-md rounded-lg p-4 hover:shadow-xl transition"
+      >
+        <img
+          [src]="
+            pizza.image_url || 'https://via.placeholder.com/300x200?text=Pizza'
+          "
+          alt="{{ pizza.name }}"
+          class="w-full h-60 object-cover rounded-md mb-4"
+        />
+        <h2 class="text-xl font-semibold">{{ pizza.name }}</h2>
+        <p class="text-gray-600 mt-2">Price: {{ pizza.price }} €</p>
+        <button
+          (click)="onSelectPizza(pizza)"
+          class="mt-4 bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded transition"
+        >
+          Add to Cart
+        </button>
+      </div>
+    </div>
+
+    <!-- Popup Modal -->
+    <div
+      *ngIf="showPopup"
+      class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50"
+    >
+      <div class="bg-white p-6 rounded shadow-lg w-96">
+        <h2 class="text-xl font-bold mb-2">Confirm Add to Cart</h2>
+        <p class="mb-4">
+          Do you want to add <strong>{{ selectedPizza?.name }}</strong> to your
+          cart?
+        </p>
+        <div class="flex justify-end space-x-4">
+          <button
+            (click)="onCancelAdd()"
+            class="bg-gray-300 hover:bg-gray-400 text-black px-4 py-2 rounded"
+          >
+            Cancel
+          </button>
+          <button
+            (click)="onAddToCart(selectedPizza!)"
+            class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
+          >
+            Add
+          </button>
+        </div>
+      </div>
+    </div>
+  </main>
 </div>
