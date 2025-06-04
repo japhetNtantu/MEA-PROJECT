@@ -30,6 +30,25 @@ class CustomerDetailModel(BaseModel):
     class Config:
         from_attributes = True
 
+class CustomerDetailWithFullModel(CustomerDetailModel):
+    name: Optional[str]
+    firstname: Optional[str]
+    password: str  # We keep it here but override its output
+    is_superuser: bool
+
+    class Config:
+        from_attributes = True
+
+    @property
+    def masked_password(self) -> str:
+        return "*****"
+
+    def model_dump(self, *args, **kwargs):
+        # Override to use the masked password in the output
+        data = super().model_dump(*args, **kwargs)
+        data["password"] = self.masked_password
+        return data
+    
 
 class Token(BaseModel):
     access_token: str

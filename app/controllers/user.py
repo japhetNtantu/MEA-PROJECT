@@ -8,6 +8,7 @@ from fastapi import Depends
 from fastapi import HTTPException
 from fastapi import status
 
+
 from app.auth.authentication import create_access_token
 from app.auth.authentication import get_current_user
 from app.config import cfg
@@ -54,7 +55,7 @@ async def login(credentials: LoginRequest = Body(...)):
         )
     access_token_expires = timedelta(minutes=cfg.ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(
-        data={"sub": user.username}, expires_delta=access_token_expires
+        data={"sub": user.username, "isAdmin": user.is_superuser}, expires_delta=access_token_expires
     )
     return Token(access_token=access_token, token_type="bearer")
 
