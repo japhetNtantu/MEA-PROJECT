@@ -1,0 +1,33 @@
+<div class="cart-dropdown">
+    <div class="dropdown-header">
+      <h3>Mon Panier</h3>
+      <button class="close-btn" (click)="onClose()">X</button>
+    </div>
+  
+    <div *ngIf="cartItems.length === 0" class="empty-cart-message">
+      <p>Votre panier est vide.</p>
+    </div>
+  
+    <div *ngIf="cartItems.length > 0" class="cart-items-list">
+      <div *ngFor="let item of cartItems" class="cart-item">
+        <img [src]="item.pizza.image_url || 'assets/placeholder-pizza.png'" [alt]="item.pizza.name" class="item-image">
+        <div class="item-details">
+          <span class="item-name">{{ item.pizza.name }}</span>
+          <span class="item-price">{{ item.pizza.price | currency:'EUR':'symbol':'1.2-2':'fr' }}</span>
+          <div class="item-quantity-controls">
+            <button (click)="decreaseQuantity(item.pizza.id)">-</button>
+            <span>{{ item.quantity }}</span>
+            <button (click)="increaseQuantity(item.pizza.id)">+</button>
+          </div>
+        </div>
+        <button class="remove-item-btn" (click)="removeItem(item.pizza.id)">Supprimer</button>
+      </div>
+    </div>
+  
+    <div *ngIf="cartItems.length > 0" class="dropdown-footer">
+      <div class="cart-total">
+        Total: {{ cartTotal | currency:'EUR':'symbol':'1.2-2':'fr' }}
+      </div>
+      <button class="checkout-btn" (click)="placeOrder()">Passer la commande</button>
+    </div>
+  </div>

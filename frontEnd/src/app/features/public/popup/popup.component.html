@@ -1,0 +1,14 @@
+<div class="popup-overlay" *ngIf="pizza">
+    <div class="popup-content">
+      <button class="close-button" (click)="onCancelClick()">X</button>
+      <h2>{{ pizza.name }}</h2>
+      <img [src]="pizza.image_url || 'assets/placeholder-pizza.png'" [alt]="pizza.name" class="pizza-image">
+      <p class="pizza-description">{{ pizza.description }}</p>
+      <div class="pizza-price">{{ pizza.price | currency:'EUR':'symbol':'1.2-2':'fr' }}</div>
+  
+      <div class="popup-actions">
+        <button class="add-button" (click)="onAddToCartClick()">Ajouter au panier</button>
+        <button class="cancel-button" (click)="onCancelClick()">Annuler</button>
+      </div>
+    </div>
+  </div>

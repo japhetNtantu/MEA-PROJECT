@@ -1,0 +1,178 @@
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f7f6;
+    color: #333;
+  }
+
+  .navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #3f51b5;
+    color: white;
+    padding: 10px 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    flex-wrap: wrap; 
+  }
+  
+  .navbar-left {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  
+  .app-logo {
+    display: flex;
+    align-items: center;
+  }
+  
+  .logo-img {
+    height: 40px; 
+    margin-right: 10px;
+  }
+  
+  .navbar h1 {
+    margin: 0;
+    font-size: 1.8em;
+    font-weight: 600;
+  }
+  
+  .user-profile {
+    font-size: 1em;
+    padding: 5px 10px;
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  .user-profile strong {
+    font-weight: bold;
+  }
+  
+  .navbar-right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap; 
+  }
+  
+  .nav-link {
+    color: white;
+    text-decoration: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    font-weight: 500;
+  }
+  
+  .nav-link:hover,
+  .nav-link.active {
+    background-color: rgba(255, 255, 255, 0.2);
+  }
+  
+  .logout-button {
+    background-color: #dc3545;
+    border: none;
+    cursor: pointer;
+    font-size: 1em;
+  }
+  
+  .logout-button:hover {
+    background-color: #c82333;
+  }
+  
+  .content {
+    padding: 20px;
+    min-height: calc(100vh - 120px); 
+  }
+  
+  .cart-link {
+    position: relative;
+  }
+  
+  .cart-badge {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background-color: #ff5722;
+    color: white;
+    border-radius: 50%;
+    padding: 3px 7px;
+    font-size: 0.7em;
+    font-weight: bold;
+    min-width: 20px;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+
+  .order-success-snapshot {
+    position: fixed;
+    top: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #28a745; 
+    color: white;
+    padding: 15px 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    z-index: 1000; 
+    font-size: 1.2em;
+    animation: fadeInOut 3s forwards;
+  }
+  
+
+  .footer {
+    text-align: center;
+    padding: 15px;
+    background-color: #333;
+    color: white;
+    font-size: 0.9em;
+    margin-top: 20px;
+  }
+  
+  @keyframes fadeInOut {
+    0% { opacity: 0; transform: translate(-50%, -20px); }
+    10% { opacity: 1; transform: translate(-50%, 0); }
+    90% { opacity: 1; transform: translate(-50%, 0); }
+    100% { opacity: 0; transform: translate(-50%, -20px); }
+  }
+  
+
+  .navbar-right {
+      position: relative; 
+  }
+
+  @media (max-width: 768px) {
+    .navbar {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  
+    .navbar-left, .navbar-right {
+      width: 100%;
+      justify-content: center;
+      margin-top: 10px;
+      gap: 10px;
+    }
+  
+    .user-profile {
+      margin-bottom: 10px;
+    }
+  
+    .navbar h1 {
+      font-size: 1.5em;
+    }
+  
+    .nav-link, .logout-button {
+      padding: 6px 10px;
+      font-size: 0.9em;
+    }
+
+    .cart-badge {
+        top: -5px;
+        right: -5px;
+        font-size: 0.6em;
+        min-width: 16px;
+      }
+  }
