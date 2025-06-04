@@ -41,7 +41,7 @@ class OrderItemAdminDashboard(OrderItemAdmin):
 app = FastAPI()
 
 logging.info("Starting application initialization...")
-init_application(application=app)
+init_application(app)
 logging.info("Successfully initialized!")
 
 app.mount("/admin", admin_app)

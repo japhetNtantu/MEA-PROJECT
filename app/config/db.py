@@ -1,5 +1,4 @@
-from betterconf import betterconf
-from betterconf import field
+import os
 
 from app.config.cfg import DEBUG
 
@@ -12,13 +11,12 @@ POSTGRES_DB_URL = "postgres://{postgres_user}:{postgres_password}@{postgres_host
 SQLITE_DB_URL = "sqlite://db.sqlite3"
 
 
-@betterconf
 class PostgresSettings:
-    postgres_user: str = field("POSTGRES_USER", default="postgres")
-    postgres_password: str = field("POSTGRES_PASSWORD", default="postgres")
-    postgres_db: str = field("POSTGRES_DB", default="mydb")
-    postgres_port: str = field("POSTGRES_PORT", default="5432")
-    postgres_host: str = field("POSTGRES_HOST", default="postgres")
+    postgres_user: str = os.getenv("POSTGRES_USER")
+    postgres_password: str = os.getenv("POSTGRES_PASSWORD")
+    postgres_db: str = os.getenv("POSTGRES_DB")
+    postgres_port: str = os.getenv("POSTGRES_PORT")
+    postgres_host: str = os.getenv("POSTGRES_HOST")
 
 
 class TortoiseSettings:
