@@ -93,6 +93,7 @@ jobs:
             git clone https://github.com/masterivanic/Pizza-App-FastAPI.git
             cd Pizza-App-FastAPI
             sudo docker compose -f compose-prod.yaml build --no-cache && sudo docker compose -f compose-prod.yaml up -d
+            cd .. && rm -rf Pizza-App-FastAPI
           EOF
 
       - name: Cleanup
