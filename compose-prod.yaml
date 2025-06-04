@@ -1,0 +1,62 @@
+services:
+
+  traefik:
+    image: "traefik:v2.10"
+    container_name: "traefik"
+    command:
+      - "--log.level=${TRAEFIK_LOG_LEVEL}"
+      - "--accesslog=${TRAEFIK_ACCESS_LOG}"
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.websecure.address=:443"
+      - "--certificatesresolvers.backend.acme.tlschallenge=true"
+      - "--certificatesresolvers.backend.acme.email=${ACME_EMAIL}"
+      - "--certificatesresolvers.backend.acme.storage=/letsencrypt/backend.json"
+    ports:
+      - "443:443"
+      # - "8000:8000"
+    volumes:
+      - "./letsencrypt:/letsencrypt"
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+
+  pizza-db:
+    image: postgres:16.6-bullseye
+    container_name: pizza-db-container
+    restart: unless-stopped
+    expose:
+      - "5432"
+    environment:
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    volumes:
+      - "db-data:/var/lib/postgresql/data/"
+    env_file:
+      - .env
+
+  backend: 
+    build:
+      context: .
+      dockerfile: ./app/Dockerfile
+    container_name: pizza-container
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_HOST=pizza-db
+      - POSTGRES_PORT=${POSTGRES_PORT}
+      - ADMIN_USER_MODEL=${ADMIN_USER_MODEL}
+      - ADMIN_USER_MODEL_USERNAME_FIELD=${ADMIN_USER_MODEL_USERNAME_FIELD}
+      - ADMIN_SECRET_KEY=${ADMIN_SECRET_KEY}
+      - API_TEST=${API_TEST}
+    depends_on:
+      - pizza-db
+    # labels:
+    #   - "traefik.enable=true"
+    #   - "traefik.http.routers.backend.rule=Host(`${DOMAIN_NAME}`)"
+    #   - "traefik.http.routers.dokemon.entrypoints=web"
+    env_file:
+      - .env
+    ports: 
+      - '8000:8000'
+
+volumes:
+  db-data:

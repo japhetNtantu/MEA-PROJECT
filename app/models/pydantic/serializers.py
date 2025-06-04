@@ -1,4 +1,5 @@
 from datetime import datetime
+from decimal import Decimal
 from typing import Optional
 from uuid import UUID
 
@@ -15,7 +16,7 @@ class CustomerCreateOrUpdateModel(BaseModel):
     password: str = Field(..., min_length=8)
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class CustomerDetailModel(BaseModel):
@@ -27,7 +28,7 @@ class CustomerDetailModel(BaseModel):
     updated_at: datetime
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class Token(BaseModel):
@@ -42,3 +43,36 @@ class TokenData(BaseModel):
 class LoginRequest(BaseModel):
     username: str
     password: str
+
+
+class PizzaDetailModel(BaseModel):
+    id: UUID
+    image_url: str | None
+    description: str | None
+    price: Decimal
+
+    class Config:
+        orm_mode = True
+
+
+class Status(BaseModel):
+    message: str
+
+
+class OrderCreatedModel(BaseModel):
+    customer: UUID
+
+
+class AddToCartRequest(BaseModel):
+    customer_id: UUID
+    pizza_id: UUID
+    quantity: int
+
+
+class PizzaCreateModel(BaseModel):
+    image_url: str
+    description: str
+    price: Decimal
+
+    class Config:
+        from_attributes = True

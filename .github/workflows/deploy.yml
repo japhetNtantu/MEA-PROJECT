@@ -1,0 +1,100 @@
+name: Pizza OPs CI/CD process
+
+on:
+  push:
+    branches: ["main"]
+
+concurrency:
+  group: ${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  tests:
+    name: Python ${{ matrix.python-version }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.11"]
+      fail-fast: false
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run pre-commit
+        run: |
+          cd app/
+          pre-commit run --all-files
+
+  docker:
+    name: Build and Push Docker Image
+    if: github.event_name == 'push'
+    needs: tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Extract tag
+        id: extract_tag
+        shell: bash
+        run: |
+          if [ "$GITHUB_REF" = "refs/heads/main" ]; then
+            echo "tag=latest" >> $GITHUB_OUTPUT
+            echo "version_tag=true" >> $GITHUB_OUTPUT
+          else
+            echo "tag=${GITHUB_REF#refs/heads/}" >> $GITHUB_OUTPUT
+            echo "version_tag=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to Docker Hub Registry
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERREGISTRY_USERNAME }}
+          password: ${{ secrets.DOCKERREGISTRY_TOKEN }}
+
+  deploy:
+    name: Deploy to Amazon EC2
+    needs: docker
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/pizza.pem
+          chmod 400 ~/.ssh/pizza.pem
+          ssh-keyscan ${{ vars.SSH_HOST }} >> ~/.ssh/known_hosts
+          ssh -vvv -i ~/.ssh/pizza.pem ${{ vars.SSH_LOGIN }}@${{ vars.SSH_HOST }}
+
+      - name: Deploy on Amazon EC2 instance
+        run: |
+          ssh -i ~/.ssh/pizza.pem -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${{ vars.SSH_LOGIN }}@${{ vars.SSH_HOST }} << EOF
+            sudo docker buildx prune -f && sudo docker volume prune -f
+            CONTAINERS=$(sudo docker ps -aq)
+            if [ -n "$CONTAINERS" ]; then
+              echo "Stopping and removing containers..."
+              sudo docker rm -f $CONTAINERS
+            else
+              echo "No containers to stop or remove."
+            fi
+            sudo mkdir -p ./letsencrypt
+            git clone https://github.com/masterivanic/Pizza-App-FastAPI.git
+            cd Pizza-App-FastAPI
+            sudo docker compose -f compose-prod.yaml build --no-cache && sudo docker compose -f compose-prod.yaml up -d
+            cd .. && rm -rf Pizza-App-FastAPI
+          EOF
+
+      - name: Cleanup
+        run: rm -rf ~/.ssh/pizza.pem

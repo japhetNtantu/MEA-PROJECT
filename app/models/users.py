@@ -15,6 +15,7 @@ class Customer(models.Model):
     phone = fields.CharField(max_length=20)
     address = fields.CharField(max_length=50, null=True)
     password = fields.CharField(max_length=128)
+    is_superuser = fields.BooleanField(default=True)
     created_at = fields.DatetimeField(auto_now_add=True)
     updated_at = fields.DatetimeField(auto_now=True)
 
@@ -24,7 +25,7 @@ class Customer(models.Model):
         return self.username
 
     def __str__(self):
-        return self.username + " " + self.password
+        return self.username
 
     def save(self, *args, **kwargs):
         if not self.password.startswith("$2b$"):
