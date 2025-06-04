@@ -2,7 +2,7 @@ name: Pizza OPs CI/CD process
 
 on:
   push:
-    branches: ["feat/init-backend"]
+    branches: ["main"]
 
 concurrency:
   group: ${{ github.head_ref || github.run_id }}
