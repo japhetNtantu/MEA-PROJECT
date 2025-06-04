@@ -81,19 +81,18 @@ jobs:
       - name: Deploy on Amazon EC2 instance
         run: |
           ssh -i ~/.ssh/pizza.pem -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${{ vars.SSH_LOGIN }}@${{ vars.SSH_HOST }} << EOF
-            sudo docker buildx prune -f
+            sudo docker buildx prune -f && sudo docker volume prune -f
             CONTAINERS=$(sudo docker ps -aq)
             if [ -n "$CONTAINERS" ]; then
-              sudo docker stop $CONTAINERS
-              sleep 10
-              sudo docker rm $CONTAINERS
-              sleep 2
+              echo "Stopping and removing containers..."
+              sudo docker rm -f $CONTAINERS
             else
               echo "No containers to stop or remove."
             fi
             sudo mkdir -p ./letsencrypt
             git clone https://github.com/masterivanic/Pizza-App-FastAPI.git
-            sudo docker compose -f ./Pizza-App-FastAPI/compose-prod.yaml build --no-cache && sudo docker compose -f ./Pizza-App-FastAPI/compose-prod.yaml up -d
+            cd Pizza-App-FastAPI
+            sudo docker compose -f compose-prod.yaml build --no-cache && sudo docker compose -f compose-prod.yaml up -d
           EOF
 
       - name: Cleanup
