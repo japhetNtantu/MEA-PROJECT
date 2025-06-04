@@ -52,7 +52,7 @@ class PizzaDetailModel(BaseModel):
     price: Decimal
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class Status(BaseModel):
