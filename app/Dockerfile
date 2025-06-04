@@ -1,8 +1,8 @@
 FROM python:3.11-alpine
+ENV PYTHONUNBUFFERED=1 
+WORKDIR /pizza
 
-WORKDIR /app
-
-COPY requirements.txt /app
+COPY requirements.txt /pizza
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip3 install -r requirements.txt
@@ -16,9 +16,11 @@ RUN apk update && apk add --no-cache \
 
 RUN addgroup -S docker && adduser -S vscode -G docker -s /bin/bash
 
-COPY . /app/
-RUN chmod +x ./entrypoint.sh
-RUN sed -i 's/\r$//' ./entrypoint.sh && chmod +x ./entrypoint.sh
+COPY ./app/entrypoint.sh ./pizza/entrypoint.sh
+RUN chmod +x ./pizza/entrypoint.sh
+RUN sed -i 's/\r$//' ./pizza/entrypoint.sh && chmod +x ./pizza/entrypoint.sh
+
+COPY . /pizza
 
 EXPOSE 8000
-ENTRYPOINT ["./entrypoint.sh"]
+ENTRYPOINT ["/pizza/entrypoint.sh"]
